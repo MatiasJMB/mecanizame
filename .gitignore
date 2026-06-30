@@ -1,0 +1,31 @@
+# Dependencias
+node_modules/
+**/node_modules/
+
+# Builds
+dist/
+build/
+.next/
+*.tsbuildinfo
+
+# Entorno / secretos
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# WhatsApp / Baileys (sesión sensible)
+auth_info_baileys/
+**/auth_info_baileys/
+
+# Vercel / Supabase local
+.vercel/
+.supabase/
+
+# Logs y temporales
+*.log
+npm-debug.log*
+.DS_Store
+coverage/
