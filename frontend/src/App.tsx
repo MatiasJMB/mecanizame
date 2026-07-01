@@ -5,6 +5,9 @@ import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import Panel from './pages/Panel';
+import Clientes from './pages/Clientes';
+import Servicios from './pages/Servicios';
+import Ordenes from './pages/Ordenes';
 import Shell from './components/Shell';
 
 function FullScreenLoader({ label }: { label?: string }) {
@@ -60,6 +63,9 @@ function MainApp() {
         <Route path="/registro" element={<Registro />} />
         <Route element={<ProtectedShell />}>
           <Route path="/" element={<Panel />} />
+          <Route path="/clientes" element={<Clientes />} />
+          <Route path="/servicios" element={<Servicios />} />
+          <Route path="/ordenes" element={<Ordenes />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
