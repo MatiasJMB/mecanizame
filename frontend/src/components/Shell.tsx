@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LayoutDashboard, Users, Wrench, ClipboardList, LogOut, Cog } from 'lucide-react';
+import { LayoutDashboard, Users, Wrench, ClipboardList, LogOut } from 'lucide-react';
 
 const NAV = [
   { to: '/', label: 'Resumen', icon: LayoutDashboard, end: true },
@@ -13,14 +13,11 @@ const NAV = [
 function Brand() {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-900/30">
-        <Cog className="h-5 w-5 text-white" />
+      <div className="logo-tile grid h-10 w-10 shrink-0 place-items-center p-1">
+        <img src="/logo-mark.png?v=1" alt="" className="h-full w-full object-contain" />
       </div>
       <div className="leading-tight">
-        <p className="text-sm font-black">
-          <span className="gradient-brand-text">Taller</span>
-          <span className="text-gray-200"> SaaS</span>
-        </p>
+        <p className="text-sm font-black text-gray-100">Taller <span className="gradient-brand-text">Mecánico</span></p>
         <p className="text-[10px] uppercase tracking-widest text-gray-500">Diésel · Diagnóstico</p>
       </div>
     </div>
@@ -71,7 +68,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           {NAV.map((n) => (
             <NavLink key={n.to} to={n.to} end={n.end}
               className={({ isActive }) =>
-                `flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold ${isActive ? 'bg-orange-500/15 text-orange-400' : 'text-gray-400'}`}>
+                `flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold ${isActive ? 'bg-blue-500/15 text-blue-400' : 'text-gray-400'}`}>
               <n.icon className="h-4 w-4" /> {n.label}
             </NavLink>
           ))}

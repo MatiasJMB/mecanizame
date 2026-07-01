@@ -55,7 +55,7 @@ export default function Registro() {
     <div className="flex min-h-screen items-center justify-center bg-gray-950 p-4 text-gray-100">
       <div className="w-full max-w-md rounded-3xl border border-white/10 bg-gray-900/60 p-8 backdrop-blur-2xl">
         <h1 className="text-2xl font-black">
-          Crea tu <span className="text-orange-400">taller</span>
+          Crea tu <span className="text-blue-400">taller</span>
         </h1>
         <p className="mt-1 mb-6 text-sm text-gray-400">Registra tu servicio técnico en segundos.</p>
 
@@ -79,7 +79,7 @@ export default function Registro() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 w-full rounded-xl bg-orange-600 py-3.5 font-black transition-transform hover:bg-orange-500 active:scale-95 disabled:opacity-50"
+            className="mt-2 w-full rounded-xl bg-blue-600 py-3.5 font-black transition-transform hover:bg-blue-500 active:scale-95 disabled:opacity-50"
           >
             {loading ? 'Creando…' : 'Crear cuenta'}
           </button>
@@ -87,7 +87,7 @@ export default function Registro() {
 
         <p className="mt-6 text-center text-sm text-gray-500">
           ¿Ya tienes cuenta?{' '}
-          <Link to="/login" className="font-bold text-orange-400 hover:underline">
+          <Link to="/login" className="font-bold text-blue-400 hover:underline">
             Inicia sesión
           </Link>
         </p>
@@ -123,7 +123,7 @@ function Field({
         placeholder={placeholder}
         required={required}
         minLength={minLength}
-        className="w-full rounded-xl border border-white/10 bg-gray-950/50 px-4 py-3 text-white transition-colors placeholder:text-gray-600 focus:border-orange-500/60 focus:outline-none"
+        className="w-full rounded-xl border border-white/10 bg-gray-950/50 px-4 py-3 text-white transition-colors placeholder:text-gray-600 focus:border-blue-500/60 focus:outline-none"
       />
     </div>
   );

@@ -30,7 +30,7 @@ export default function Panel() {
   const [recent, setRecent] = useState<RecentOrder[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { document.title = 'Resumen — Taller SaaS'; }, []);
+  useEffect(() => { document.title = 'Resumen — Taller Mecánico'; }, []);
 
   useEffect(() => {
     if (!organizationId) return;
@@ -68,7 +68,7 @@ export default function Panel() {
   }, [organizationId]);
 
   if (loading || !kpis) {
-    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-orange-400" /></div>;
+    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-blue-400" /></div>;
   }
 
   const activeOrders = kpis.byStatus.pending + kpis.byStatus.in_progress;
@@ -93,7 +93,7 @@ export default function Panel() {
       <section className="rounded-2xl border border-white/10 bg-gray-900/40 p-5">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-bold">Órdenes por estado</h2>
-          <Link to="/ordenes" className="text-xs font-bold text-orange-400 hover:underline">Ver todas →</Link>
+          <Link to="/ordenes" className="text-xs font-bold text-blue-400 hover:underline">Ver todas →</Link>
         </div>
         {totalOrders === 0 ? (
           <p className="text-sm text-gray-500">Aún no hay órdenes de servicio.</p>
@@ -146,8 +146,8 @@ function Kpi({ icon: Icon, label, value, accent, to }: {
   icon: React.ComponentType<{ className?: string }>; label: string; value: string; accent?: boolean; to?: string;
 }) {
   const inner = (
-    <div className={`rounded-2xl border p-5 transition-colors ${accent ? 'border-orange-500/30 bg-orange-500/10' : 'border-white/10 bg-gray-900/40 hover:bg-gray-900/60'}`}>
-      <Icon className={`h-5 w-5 ${accent ? 'text-orange-400' : 'text-gray-500'}`} />
+    <div className={`rounded-2xl border p-5 transition-colors ${accent ? 'border-blue-500/30 bg-blue-500/10' : 'border-white/10 bg-gray-900/40 hover:bg-gray-900/60'}`}>
+      <Icon className={`h-5 w-5 ${accent ? 'text-blue-400' : 'text-gray-500'}`} />
       <p className="mt-3 text-2xl font-black">{value}</p>
       <p className="text-xs text-gray-400">{label}</p>
     </div>

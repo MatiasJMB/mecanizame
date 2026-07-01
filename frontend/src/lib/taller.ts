@@ -1,7 +1,8 @@
 // Constantes de dominio del taller (marca, estados, catálogo base).
 
 export const BRAND = {
-  shortName: 'Taller Diésel',
+  name: 'Taller Mecánico',
+  shortName: 'Taller Mecánico',
   tagline: 'Humo por el escape y pérdida de potencia: lo solucionamos.',
   warranty: 'Todo garantizado por 6 meses.',
 };

@@ -2,34 +2,28 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
-    <link rel="apple-touch-icon" href="/favicon.svg?v=3" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256.png?v=1" />
+    <link rel="apple-touch-icon" href="/favicon-256.png?v=1" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#0a0805" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#faf6ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a111e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#eef2f8" media="(prefers-color-scheme: light)" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>Ahora Pan · Tu Panadería Digital</title>
+    <meta name="description" content="Taller Mecánico — gestión de clientes, vehículos, órdenes y servicios de diésel." />
+    <title>Taller Mecánico</title>
     <script>
-      // Aplica el tema guardado antes del primer paint para evitar el flash oscuro
-      // al entrar en modo claro (FOUC). Replica la lógica de ThemeContext.
+      // Aplica el tema guardado antes del primer paint (evita FOUC).
       (function () {
         try {
-          var stored = localStorage.getItem('ahorapan-theme');
+          var stored = localStorage.getItem('taller-theme');
           var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
           var root = document.documentElement;
           root.dataset.theme = theme;
           root.classList.add(theme);
           root.style.colorScheme = theme;
-          var bg = theme === 'light' ? '#faf6ef' : '#0a0805';
-          document.documentElement.style.setProperty('--boot-bg', bg);
-          if (theme === 'light') {
-            document.addEventListener('DOMContentLoaded', function () {
-              var lg = document.querySelector('.loader-logo');
-              if (lg) lg.setAttribute('src', '/logo-light.png?v=1');
-            });
-          }
+          document.documentElement.style.setProperty('--boot-bg', theme === 'light' ? '#eef2f8' : '#0a111e');
         } catch (e) {}
       })();
     </script>
@@ -37,23 +31,23 @@
   <body>
     <div id="root">
       <style>
-        html, body { background-color: var(--boot-bg, #0a0805); margin: 0; padding: 0; }
+        html, body { background-color: var(--boot-bg, #0a111e); margin: 0; padding: 0; }
         .initial-loader {
           display: flex; flex-direction: column; align-items: center; justify-content: center;
           height: 100vh; width: 100vw; font-family: system-ui, -apple-system, sans-serif;
         }
         .loader-logo {
-          width: 116px; height: 116px; margin-bottom: 24px;
-          filter: drop-shadow(0 10px 30px rgba(234, 88, 12, 0.35));
+          width: 112px; height: 112px; margin-bottom: 22px; border-radius: 20px; background: #fff;
+          padding: 12px; box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
           animation: logo-pulse 2s infinite ease-in-out;
         }
         @keyframes logo-pulse {
-          0%, 100% { transform: scale(1); opacity: 0.78; }
-          50% { transform: scale(1.08); opacity: 1; }
+          0%, 100% { transform: scale(1); opacity: 0.9; }
+          50% { transform: scale(1.06); opacity: 1; }
         }
       </style>
       <div class="initial-loader">
-        <img src="/logo.png?v=1" class="loader-logo" alt="Ahora Pan" />
+        <img src="/logo-mark.png?v=1" class="loader-logo" alt="Taller Mecánico" />
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>

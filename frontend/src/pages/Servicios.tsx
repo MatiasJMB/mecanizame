@@ -39,7 +39,7 @@ export default function Servicios() {
   const [saving, setSaving] = useState(false);
   const [newCategory, setNewCategory] = useState('');
 
-  useEffect(() => { document.title = 'Servicios — Taller SaaS'; }, []);
+  useEffect(() => { document.title = 'Servicios — Taller Mecánico'; }, []);
 
   const load = async () => {
     if (!organizationId) return;
@@ -141,7 +141,7 @@ export default function Servicios() {
   };
 
   if (loading) {
-    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-orange-400" /></div>;
+    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-blue-400" /></div>;
   }
 
   return (
@@ -153,7 +153,7 @@ export default function Servicios() {
         </div>
         <button
           onClick={() => setDraft(emptyDraft(categories[0]?.id))}
-          className="flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-black transition-colors hover:bg-orange-500"
+          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-black transition-colors hover:bg-blue-500"
         >
           <Plus className="h-4 w-4" /> Nuevo servicio
         </button>
@@ -166,7 +166,7 @@ export default function Servicios() {
           onChange={(e) => setNewCategory(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addCategory()}
           placeholder="Nueva categoría (ej: Frenos)"
-          className="w-56 rounded-lg border border-white/10 bg-gray-950/60 px-3 py-2 text-sm placeholder:text-gray-600 focus:border-orange-500/60 focus:outline-none"
+          className="w-56 rounded-lg border border-white/10 bg-gray-950/60 px-3 py-2 text-sm placeholder:text-gray-600 focus:border-blue-500/60 focus:outline-none"
         />
         <button onClick={addCategory} className="rounded-lg border border-white/10 px-3 py-2 text-sm font-bold hover:bg-white/5">
           + Categoría
@@ -181,7 +181,7 @@ export default function Servicios() {
           <button
             onClick={loadDefaultCatalog}
             disabled={saving}
-            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-black hover:bg-orange-500 disabled:opacity-50"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-black hover:bg-blue-500 disabled:opacity-50"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />} Cargar catálogo base
           </button>
@@ -203,7 +203,7 @@ export default function Servicios() {
               ))}
               <button
                 onClick={() => setDraft(emptyDraft(cat.id))}
-                className="grid min-h-[92px] place-items-center rounded-2xl border border-dashed border-white/10 text-sm text-gray-500 transition-colors hover:border-orange-500/40 hover:text-orange-300"
+                className="grid min-h-[92px] place-items-center rounded-2xl border border-dashed border-white/10 text-sm text-gray-500 transition-colors hover:border-blue-500/40 hover:text-blue-300"
               >
                 <span className="flex items-center gap-1"><Plus className="h-4 w-4" /> Agregar</span>
               </button>
@@ -252,7 +252,7 @@ function ServiceCard({ s, onEdit, onToggle, onDelete }: {
       </div>
       {s.description && <p className="mt-1 text-xs leading-relaxed text-gray-400">{s.description}</p>}
       <div className="mt-3 flex items-center justify-between">
-        <span className="font-black text-orange-300">{formatCLP(s.base_price)}</span>
+        <span className="font-black text-blue-300">{formatCLP(s.base_price)}</span>
         <button
           onClick={onToggle}
           className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${s.is_active ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/5 text-gray-500'}`}
@@ -301,7 +301,7 @@ function ServiceForm({ draft, categories, saving, onChange, onCancel, onSave }: 
         </div>
         <div className="mt-6 flex gap-2">
           <button onClick={onCancel} className="flex-1 rounded-xl border border-white/10 py-2.5 text-sm font-bold hover:bg-white/5">Cancelar</button>
-          <button onClick={onSave} disabled={saving} className="flex-1 rounded-xl bg-orange-600 py-2.5 text-sm font-black hover:bg-orange-500 disabled:opacity-50">
+          <button onClick={onSave} disabled={saving} className="flex-1 rounded-xl bg-blue-600 py-2.5 text-sm font-black hover:bg-blue-500 disabled:opacity-50">
             {saving ? 'Guardando…' : 'Guardar'}
           </button>
         </div>

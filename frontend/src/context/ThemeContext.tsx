@@ -9,7 +9,7 @@ type ThemeContextValue = {
   setTheme: (theme: Theme) => void;
 };
 
-const STORAGE_KEY = 'ahorapan-theme';
+const STORAGE_KEY = 'taller-theme';
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 

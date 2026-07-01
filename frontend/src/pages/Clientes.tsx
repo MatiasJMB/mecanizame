@@ -29,7 +29,7 @@ export default function Clientes() {
   const [customerForm, setCustomerForm] = useState(false);
   const [vehicleForCustomer, setVehicleForCustomer] = useState<string | null>(null);
 
-  useEffect(() => { document.title = 'Clientes — Taller SaaS'; }, []);
+  useEffect(() => { document.title = 'Clientes — Taller Mecánico'; }, []);
 
   const load = async () => {
     if (!organizationId) return;
@@ -58,7 +58,7 @@ export default function Clientes() {
   const selected = customers.find((c) => c.id === selectedId) ?? null;
 
   if (loading) {
-    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-orange-400" /></div>;
+    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-blue-400" /></div>;
   }
 
   return (
@@ -69,7 +69,7 @@ export default function Clientes() {
           <p className="mt-1 text-sm text-gray-400">Cada cliente con sus vehículos e historial por patente.</p>
         </div>
         <button onClick={() => setCustomerForm(true)}
-          className="flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-black hover:bg-orange-500">
+          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-black hover:bg-blue-500">
           <Plus className="h-4 w-4" /> Nuevo cliente
         </button>
       </div>
@@ -87,7 +87,7 @@ export default function Clientes() {
           {filtered.length === 0 && <p className="rounded-xl border border-dashed border-white/10 p-6 text-center text-sm text-gray-500">Sin resultados.</p>}
           {filtered.map((c) => (
             <button key={c.id} onClick={() => setSelectedId(c.id)}
-              className={`flex w-full items-center justify-between gap-3 rounded-xl border p-3.5 text-left transition-colors ${selectedId === c.id ? 'border-orange-500/40 bg-orange-500/10' : 'border-white/10 bg-gray-900/40 hover:bg-gray-900/60'}`}>
+              className={`flex w-full items-center justify-between gap-3 rounded-xl border p-3.5 text-left transition-colors ${selectedId === c.id ? 'border-blue-500/40 bg-blue-500/10' : 'border-white/10 bg-gray-900/40 hover:bg-gray-900/60'}`}>
               <div className="min-w-0">
                 <p className="truncate font-bold">{c.full_name}</p>
                 <p className="truncate text-xs text-gray-400">
@@ -159,7 +159,7 @@ function CustomerDetail({ customer, onAddVehicle }: { customer: Customer; onAddV
 
       <div className="flex items-center justify-between">
         <h3 className="text-xs font-black uppercase tracking-widest text-gray-500">Vehículos</h3>
-        <button onClick={onAddVehicle} className="flex items-center gap-1 text-xs font-bold text-orange-400 hover:underline">
+        <button onClick={onAddVehicle} className="flex items-center gap-1 text-xs font-bold text-blue-400 hover:underline">
           <Plus className="h-3.5 w-3.5" /> Agregar vehículo
         </button>
       </div>
@@ -174,7 +174,7 @@ function CustomerDetail({ customer, onAddVehicle }: { customer: Customer; onAddV
               <div key={v.id} className="rounded-xl border border-white/10 bg-gray-950/40 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <Car className="h-4 w-4 text-orange-400" />
+                    <Car className="h-4 w-4 text-blue-400" />
                     <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-sm font-bold tracking-wider">{v.license_plate}</span>
                     <span className="text-sm text-gray-300">{[v.make, v.model, v.year].filter(Boolean).join(' ') || 'Vehículo'}</span>
                   </div>
@@ -331,7 +331,7 @@ function FormButtons({ saving, onCancel, onSave }: { saving: boolean; onCancel: 
   return (
     <div className="mt-6 flex gap-2">
       <button onClick={onCancel} className="flex-1 rounded-xl border border-white/10 py-2.5 text-sm font-bold hover:bg-white/5">Cancelar</button>
-      <button onClick={onSave} disabled={saving} className="flex-1 rounded-xl bg-orange-600 py-2.5 text-sm font-black hover:bg-orange-500 disabled:opacity-50">
+      <button onClick={onSave} disabled={saving} className="flex-1 rounded-xl bg-blue-600 py-2.5 text-sm font-black hover:bg-blue-500 disabled:opacity-50">
         {saving ? 'Guardando…' : 'Guardar'}
       </button>
     </div>

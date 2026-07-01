@@ -1,21 +1,21 @@
 {
-  "name": "Ahora Pan",
-  "short_name": "AhoraPan",
+  "name": "Taller Mecánico",
+  "short_name": "Taller",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#030712",
-  "theme_color": "#ea580c",
+  "background_color": "#0a111e",
+  "theme_color": "#2f5aa5",
   "icons": [
     {
-      "src": "/favicon.svg?v=3",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/favicon-256.png?v=1",
+      "sizes": "256x256",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/favicon.svg?v=3",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
+      "src": "/logo-mark.png?v=1",
+      "sizes": "729x729",
+      "type": "image/png",
       "purpose": "maskable"
     }
   ]

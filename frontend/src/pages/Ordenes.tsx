@@ -22,7 +22,7 @@ export default function Ordenes() {
   const [filter, setFilter] = useState<WorkOrderStatus | 'all'>('all');
   const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => { document.title = 'Órdenes — Taller SaaS'; }, []);
+  useEffect(() => { document.title = 'Órdenes — Taller Mecánico'; }, []);
 
   const load = async () => {
     if (!organizationId) return;
@@ -53,7 +53,7 @@ export default function Ordenes() {
   };
 
   if (loading) {
-    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-orange-400" /></div>;
+    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-blue-400" /></div>;
   }
 
   return (
@@ -64,7 +64,7 @@ export default function Ordenes() {
           <p className="mt-1 text-sm text-gray-400">Trabajos por estado. Crea órdenes manuales ligadas a una patente.</p>
         </div>
         <button onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-black hover:bg-orange-500">
+          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-black hover:bg-blue-500">
           <Plus className="h-4 w-4" /> Nueva orden
         </button>
       </div>
@@ -73,7 +73,7 @@ export default function Ordenes() {
       <div className="flex flex-wrap gap-2">
         {FILTERS.map((s) => (
           <button key={s} onClick={() => setFilter(s)}
-            className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-colors ${filter === s ? 'border-orange-500/50 bg-orange-500/15 text-orange-300' : 'border-white/10 text-gray-400 hover:bg-white/5'}`}>
+            className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-colors ${filter === s ? 'border-blue-500/50 bg-blue-500/15 text-blue-300' : 'border-white/10 text-gray-400 hover:bg-white/5'}`}>
             {s === 'all' ? 'Todas' : ORDER_STATUS[s].label} <span className="opacity-60">({counts[s] ?? 0})</span>
           </button>
         ))}
@@ -215,7 +215,7 @@ function OrderForm({ organizationId, onClose, onSaved }: {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-orange-400" /></div>
+          <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-blue-400" /></div>
         ) : (
           <div className="space-y-4">
             {customers.length === 0 && (
@@ -279,12 +279,12 @@ function OrderForm({ organizationId, onClose, onSaved }: {
 
             <div className="flex items-center justify-between rounded-xl border border-white/10 bg-gray-950/40 px-4 py-3">
               <span className="text-sm font-bold text-gray-400">Total</span>
-              <span className="text-xl font-black text-orange-300">{formatMoney(total)}</span>
+              <span className="text-xl font-black text-blue-300">{formatMoney(total)}</span>
             </div>
 
             <div className="flex gap-2 pt-1">
               <button onClick={onClose} className="flex-1 rounded-xl border border-white/10 py-2.5 text-sm font-bold hover:bg-white/5">Cancelar</button>
-              <button onClick={save} disabled={saving} className="flex-1 rounded-xl bg-orange-600 py-2.5 text-sm font-black hover:bg-orange-500 disabled:opacity-50">
+              <button onClick={save} disabled={saving} className="flex-1 rounded-xl bg-blue-600 py-2.5 text-sm font-black hover:bg-blue-500 disabled:opacity-50">
                 {saving ? 'Creando…' : 'Crear orden'}
               </button>
             </div>
