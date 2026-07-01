@@ -8,6 +8,8 @@ import Panel from './pages/Panel';
 import Clientes from './pages/Clientes';
 import Servicios from './pages/Servicios';
 import Ordenes from './pages/Ordenes';
+import Finanzas from './pages/Finanzas';
+import Admin from './pages/Admin';
 import Shell from './components/Shell';
 
 function FullScreenLoader({ label }: { label?: string }) {
@@ -66,6 +68,8 @@ function MainApp() {
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/servicios" element={<Servicios />} />
           <Route path="/ordenes" element={<Ordenes />} />
+          <Route path="/finanzas" element={<Finanzas />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

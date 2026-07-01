@@ -3,8 +3,9 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { formatCLP, parseCLP } from '../lib/format';
 import { DEFAULT_CATALOG } from '../lib/taller';
+import { HELP } from '../lib/help';
+import PageHeader from '../components/PageHeader';
 import { Plus, Pencil, Trash2, Loader2, PackageOpen } from 'lucide-react';
-// Acento de marca: naranja industrial. Azul queda reservado a estados.
 import toast from 'react-hot-toast';
 
 type Category = { id: string; name: string; sort_order: number };
@@ -146,18 +147,14 @@ export default function Servicios() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-black">Servicios</h1>
-          <p className="mt-1 text-sm text-gray-400">Catálogo del taller. Los precios son editables.</p>
-        </div>
+      <PageHeader title="Servicios" subtitle="Catálogo de trabajos del taller. Los precios son editables." help={HELP.servicios}>
         <button
           onClick={() => setDraft(emptyDraft(categories[0]?.id))}
           className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-black transition-colors hover:bg-blue-500"
         >
           <Plus className="h-4 w-4" /> Nuevo servicio
         </button>
-      </div>
+      </PageHeader>
 
       {/* Nueva categoría */}
       <div className="flex flex-wrap items-center gap-2">

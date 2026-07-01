@@ -4,6 +4,8 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { formatMoney, formatDate } from '../lib/format';
 import { ORDER_STATUS, ORDER_STATUS_ORDER, type WorkOrderStatus } from '../lib/taller';
+import { HELP } from '../lib/help';
+import PageHeader from '../components/PageHeader';
 import { Users, Car, Wrench, ClipboardList, Loader2, TrendingUp } from 'lucide-react';
 
 type Kpis = {
@@ -25,7 +27,7 @@ type RecentOrder = {
 };
 
 export default function Panel() {
-  const { organizationId, organizationName } = useAuth();
+  const { organizationId } = useAuth();
   const [kpis, setKpis] = useState<Kpis | null>(null);
   const [recent, setRecent] = useState<RecentOrder[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,10 +78,12 @@ export default function Panel() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-black">Hola, {organizationName || 'tu taller'} 👋</h1>
-        <p className="mt-1 text-sm text-gray-400">Resumen de tu operación.</p>
-      </div>
+      <PageHeader
+        title="Resumen"
+        subtitle="Vista general de tu taller: ingresos del mes, clientes, vehículos y estado de las órdenes."
+        help={HELP.resumen}
+      />
+
 
       {/* KPI cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -11,10 +11,10 @@ export const BRAND = {
 export type WorkOrderStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 
 export const ORDER_STATUS: Record<WorkOrderStatus, { label: string; color: string; dot: string }> = {
-  pending:     { label: 'Pendiente',  color: 'text-amber-300 bg-amber-500/10 border-amber-500/20',    dot: 'bg-amber-400' },
-  in_progress: { label: 'En proceso', color: 'text-blue-300 bg-blue-500/10 border-blue-500/20',       dot: 'bg-blue-400' },
-  completed:   { label: 'Completada', color: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/20', dot: 'bg-emerald-400' },
-  cancelled:   { label: 'Cancelada',  color: 'text-gray-400 bg-white/5 border-white/10',              dot: 'bg-gray-500' },
+  pending:     { label: 'Pendiente',  color: 'chip-pending',  dot: 'bg-amber-400' },
+  in_progress: { label: 'En proceso', color: 'chip-progress', dot: 'bg-blue-400' },
+  completed:   { label: 'Completada', color: 'chip-done',     dot: 'bg-emerald-400' },
+  cancelled:   { label: 'Cancelada',  color: 'chip-cancel',   dot: 'bg-gray-500' },
 };
 
 export const ORDER_STATUS_ORDER: WorkOrderStatus[] = ['pending', 'in_progress', 'completed', 'cancelled'];

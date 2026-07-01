@@ -3,6 +3,8 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { formatMoney, formatDate } from '../lib/format';
 import { ORDER_STATUS, type WorkOrderStatus } from '../lib/taller';
+import { HELP } from '../lib/help';
+import PageHeader from '../components/PageHeader';
 import { Plus, Search, Loader2, Car, Phone, Mail, User, X, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -63,16 +65,12 @@ export default function Clientes() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-black">Clientes</h1>
-          <p className="mt-1 text-sm text-gray-400">Cada cliente con sus vehículos e historial por patente.</p>
-        </div>
+      <PageHeader title="Clientes" subtitle="Cada cliente con sus vehículos e historial por patente." help={HELP.clientes}>
         <button onClick={() => setCustomerForm(true)}
           className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-black hover:bg-blue-500">
           <Plus className="h-4 w-4" /> Nuevo cliente
         </button>
-      </div>
+      </PageHeader>
 
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />

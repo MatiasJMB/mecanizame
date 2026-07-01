@@ -3,6 +3,8 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { formatMoney, formatDate, formatDateTime, parseCLP } from '../lib/format';
 import { ORDER_STATUS, ORDER_STATUS_ORDER, type WorkOrderStatus } from '../lib/taller';
+import { HELP } from '../lib/help';
+import PageHeader from '../components/PageHeader';
 import { Plus, Loader2, X, Trash2, ClipboardList } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -58,16 +60,12 @@ export default function Ordenes() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-black">Órdenes de servicio</h1>
-          <p className="mt-1 text-sm text-gray-400">Trabajos por estado. Crea órdenes manuales ligadas a una patente.</p>
-        </div>
+      <PageHeader title="Órdenes de servicio" subtitle="Trabajos del taller por estado, ligados a un cliente y su patente." help={HELP.ordenes}>
         <button onClick={() => setShowForm(true)}
           className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-black hover:bg-blue-500">
           <Plus className="h-4 w-4" /> Nueva orden
         </button>
-      </div>
+      </PageHeader>
 
       {/* Filtros por estado */}
       <div className="flex flex-wrap gap-2">

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { AlertCircle, ShieldCheck } from 'lucide-react';
 import { translateError } from '../lib/auth-errors';
 import { BRAND } from '../lib/taller';
@@ -9,6 +10,7 @@ import { BRAND } from '../lib/taller';
 export default function Login() {
   useEffect(() => { document.title = 'Taller Mecánico — Iniciar sesión'; }, []);
   const { session } = useAuth();
+  const { isLight } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -36,9 +38,11 @@ export default function Login() {
       <div className="relative z-10 mx-4 flex w-full max-w-[440px] flex-col overflow-hidden rounded-[2.25rem] border border-white/10 bg-gray-900/60 shadow-2xl backdrop-blur-2xl lg:max-w-4xl lg:flex-row">
         {/* Panel de marca */}
         <div className="flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-blue-900/40 to-transparent p-8 text-center lg:w-1/2 lg:p-12">
-          <div className="logo-tile w-44 p-4 md:w-52">
-            <img src="/logo.png?v=1" alt={BRAND.name} className="w-full" />
-          </div>
+          <img
+            src={isLight ? '/logo-trans.png?v=2' : '/logo-light.png?v=2'}
+            alt={BRAND.name}
+            className="w-48 drop-shadow-[0_10px_34px_rgba(47,90,165,0.35)] md:w-56"
+          />
           <div>
             <p className="mx-auto max-w-xs text-sm leading-relaxed text-gray-300">{BRAND.tagline}</p>
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-[11px] font-bold text-blue-300">
