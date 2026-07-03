@@ -1,10 +1,10 @@
 {
-  "name": "Taller Mecánico",
-  "short_name": "Taller",
+  "name": "Mecanízame",
+  "short_name": "Mecanízame",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a111e",
-  "theme_color": "#2f5aa5",
+  "background_color": "#0a1120",
+  "theme_color": "#0a1120",
   "icons": [
     {
       "src": "/favicon-256.png?v=1",

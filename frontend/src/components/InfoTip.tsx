@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Info } from 'lucide-react';
 import type { HelpContent } from '../lib/help';
 
 /** Botón (i) con ayuda contextual. Se cierra al hacer clic fuera o con Escape. */
 export default function InfoTip({ help }: { help: HelpContent }) {
   const [open, setOpen] = useState(false);
+  const titleId = useId();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,10 +37,11 @@ export default function InfoTip({ help }: { help: HelpContent }) {
       {open && (
         <div
           role="dialog"
+          aria-labelledby={titleId}
           className="animate-scaleIn absolute left-0 top-8 z-40 w-[19rem] max-w-[calc(100vw-2rem)] origin-top-left rounded-xl border border-white/10 bg-gray-900 p-4"
           style={{ boxShadow: 'var(--shadow-lg)' }}
         >
-          <p className="mb-2 text-sm font-black">{help.title}</p>
+          <p id={titleId} className="mb-2 text-sm font-black">{help.title}</p>
           <ul className="space-y-1.5 pl-4 text-xs leading-relaxed text-gray-400" style={{ listStyle: 'disc' }}>
             {help.steps.map((s, i) => (
               <li key={i}>{s}</li>

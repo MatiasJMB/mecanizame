@@ -306,8 +306,8 @@ begin
     new.id,
     new.email,
     coalesce(new.raw_user_meta_data->>'full_name', ''),
-    -- bootstrap del super-admin (silver). Configurable: cambiar este email.
-    (new.email = 'sharkfitdevs@gmail.com')
+    -- bootstrap del super-admin (cuenta de administración). Configurable: cambiar este email.
+    (new.email = 'admin@test.cl')
   )
   on conflict (id) do nothing;
 

@@ -10,12 +10,17 @@ import Servicios from './pages/Servicios';
 import Ordenes from './pages/Ordenes';
 import Finanzas from './pages/Finanzas';
 import Admin from './pages/Admin';
+import Equipo from './pages/Equipo';
 import Shell from './components/Shell';
+import NoWorkshop from './components/NoWorkshop';
+import { ConfirmProvider } from './components/ConfirmProvider';
+import { SearchProvider } from './context/SearchContext';
+import { TourProvider } from './components/TourProvider';
 
 function FullScreenLoader({ label }: { label?: string }) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-950 text-center text-gray-100">
-      <div className="h-12 w-12 animate-spin rounded-full border-4 border-white/10 border-t-blue-500" />
+      <div className="h-12 w-12 animate-spin rounded-full border-4 border-white/10 border-t-blue-400" />
       <p className="text-xs font-black uppercase tracking-[0.28em] text-gray-500">
         {label || 'Cargando…'}
       </p>
@@ -31,11 +36,22 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function ProtectedShell() {
+  // Con multi-taller, una cuenta puede quedar temporalmente sin talleres (recién creada,
+  // o tras salir de su único taller). En vez de desloguear, se ofrece crear/unirse a uno.
+  const { needsOnboarding } = useAuth();
   return (
     <ProtectedRoute>
-      <Shell>
-        <Outlet />
-      </Shell>
+      {needsOnboarding ? (
+        <NoWorkshop />
+      ) : (
+        <SearchProvider>
+          <TourProvider>
+            <Shell>
+              <Outlet />
+            </Shell>
+          </TourProvider>
+        </SearchProvider>
+      )}
     </ProtectedRoute>
   );
 }
@@ -47,8 +63,10 @@ function ThemedToaster() {
       position="top-right"
       toastOptions={{
         style: {
-          background: isLight ? '#ffffff' : '#1f2937',
-          color: isLight ? '#211812' : '#fff',
+          background: isLight ? 'var(--theme-panel-strong)' : 'var(--theme-card)',
+          color: 'var(--theme-heading)',
+          border: '1px solid var(--theme-border)',
+          boxShadow: 'var(--shadow-lg)',
           borderRadius: '1rem',
           fontWeight: 600,
         },
@@ -69,6 +87,7 @@ function MainApp() {
           <Route path="/servicios" element={<Servicios />} />
           <Route path="/ordenes" element={<Ordenes />} />
           <Route path="/finanzas" element={<Finanzas />} />
+          <Route path="/equipo" element={<Equipo />} />
           <Route path="/admin" element={<Admin />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
@@ -81,8 +100,10 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <ThemedToaster />
-        <MainApp />
+        <ConfirmProvider>
+          <ThemedToaster />
+          <MainApp />
+        </ConfirmProvider>
       </AuthProvider>
     </ThemeProvider>
   );

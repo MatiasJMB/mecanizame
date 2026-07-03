@@ -11,7 +11,7 @@ export default function ThemeToggle({ compact = false }: { compact?: boolean }) 
       className={
         compact
           ? 'grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-gray-300 transition-colors hover:bg-white/5'
-          : 'flex w-full items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-gray-300 transition-colors hover:bg-white/5'
+          : 'flex w-full items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-gray-300 transition-colors hover:bg-white/5'
       }
     >
       {isLight ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}

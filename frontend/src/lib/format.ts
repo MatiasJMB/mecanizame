@@ -17,6 +17,14 @@ export function formatMoney(value: number | null | undefined): string {
   return clp.format(value ?? 0);
 }
 
+/** Monto CLP compacto para ejes/etiquetas de gráficos: $1,2M / $450k / $900. */
+export function formatCompactCLP(value: number | null | undefined): string {
+  const v = value ?? 0;
+  if (v >= 1_000_000) return '$' + (v / 1_000_000).toLocaleString('es-CL', { maximumFractionDigits: 1 }) + 'M';
+  if (v >= 1_000) return '$' + Math.round(v / 1000) + 'k';
+  return '$' + v;
+}
+
 /** Convierte un string de input (ej. "150.000" o "150000") a entero CLP. */
 export function parseCLP(input: string): number {
   const digits = (input || '').replace(/[^\d]/g, '');
@@ -45,3 +53,11 @@ export function toDatetimeLocal(value: string | null | undefined): string {
   const off = d.getTimezoneOffset();
   return new Date(d.getTime() - off * 60000).toISOString().slice(0, 16);
 }
+
+/** Convierte un timestamptz ISO a valor para <input type="date"> (día local, sin desfase). */
+export function dateInputValue(value: string | null | undefined): string {
+  return toDatetimeLocal(value).slice(0, 10);
+}
+
+/** Normaliza texto para búsquedas: sin acentos y en minúsculas. */
+export const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();

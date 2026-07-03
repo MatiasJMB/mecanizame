@@ -1,23 +1,26 @@
 // Constantes de dominio del taller (marca, estados, catálogo base).
 
 export const BRAND = {
-  name: 'Taller Mecánico',
-  shortName: 'Taller Mecánico',
-  tagline: 'Humo por el escape y pérdida de potencia: lo solucionamos.',
-  warranty: 'Todo garantizado por 6 meses.',
+  name: 'Mecanízame',
+  shortName: 'Mecanízame',
+  domain: 'mecaniza.me',
 };
 
 // Estados de la orden de servicio (coinciden con el CHECK del esquema).
 export type WorkOrderStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 
 export const ORDER_STATUS: Record<WorkOrderStatus, { label: string; color: string; dot: string }> = {
-  pending:     { label: 'Pendiente',  color: 'chip-pending',  dot: 'bg-amber-400' },
-  in_progress: { label: 'En proceso', color: 'chip-progress', dot: 'bg-blue-400' },
-  completed:   { label: 'Completada', color: 'chip-done',     dot: 'bg-emerald-400' },
-  cancelled:   { label: 'Cancelada',  color: 'chip-cancel',   dot: 'bg-gray-500' },
+  pending:     { label: 'Por iniciar', color: 'chip-pending',  dot: 'bg-amber-400' },
+  in_progress: { label: 'En trabajo',  color: 'chip-progress', dot: 'bg-blue-400' },
+  completed:   { label: 'Terminada',   color: 'chip-done',     dot: 'bg-emerald-400' },
+  cancelled:   { label: 'Anulada',     color: 'chip-cancel',   dot: 'bg-gray-500' },
 };
 
 export const ORDER_STATUS_ORDER: WorkOrderStatus[] = ['pending', 'in_progress', 'completed', 'cancelled'];
+
+// Agrupación para el filtro de la página Órdenes: lo que está en el taller vs. lo ya cerrado.
+export const ACTIVE_STATUSES: WorkOrderStatus[] = ['pending', 'in_progress'];
+export const HISTORY_STATUSES: WorkOrderStatus[] = ['completed', 'cancelled'];
 
 // Catálogo base de diésel: permite a un taller nuevo cargar el catálogo con 1 clic.
 // (Refleja el seed de la organización demo.)
