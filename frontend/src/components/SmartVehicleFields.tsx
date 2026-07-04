@@ -48,29 +48,31 @@ export default function SmartVehicleFields({
       <div className="grid grid-cols-2 gap-3">
         <Wrap labeled={labeled} label="Marca">
           {otherMake ? (
-            <input value={make} onChange={(e) => onChange({ make: e.target.value })} placeholder="Marca" className="inp text-sm" autoFocus />
+            <input value={make} onChange={(e) => onChange({ make: e.target.value })} placeholder="Marca" aria-label="Marca" className="inp text-sm" autoFocus />
           ) : (
-            <select value={make} onChange={(e) => onMake(e.target.value)} className="inp text-sm">
+            <select value={make} onChange={(e) => onMake(e.target.value)} aria-label="Marca" className="inp text-sm">
               <option value="">Marca…</option>
               {catalog.map((c) => <option key={c.name} value={c.name}>{c.name}</option>)}
+              {make && !catalog.some((c) => c.name === make) && <option value={make}>{make}</option>}
               <option value="__other__">Otra marca…</option>
             </select>
           )}
         </Wrap>
         <Wrap labeled={labeled} label="Modelo">
           {otherMake || otherModel ? (
-            <input value={model} onChange={(e) => onChange({ model: e.target.value })} placeholder="Modelo" className="inp text-sm" />
+            <input value={model} onChange={(e) => onChange({ model: e.target.value })} placeholder="Modelo" aria-label="Modelo" className="inp text-sm" />
           ) : (
-            <select value={model} onChange={(e) => onModel(e.target.value)} className="inp text-sm" disabled={!make}>
+            <select value={model} onChange={(e) => onModel(e.target.value)} aria-label="Modelo" className="inp text-sm" disabled={!make}>
               <option value="">{make ? 'Modelo…' : 'Elige marca primero'}</option>
               {models.map((m) => <option key={m} value={m}>{m}</option>)}
+              {model && !models.includes(model) && <option value={model}>{model}</option>}
               {make && <option value="__other__">Otro modelo…</option>}
             </select>
           )}
         </Wrap>
       </div>
       <Wrap labeled={labeled} label="Combustible">
-        <select value={fuel} onChange={(e) => onChange({ fuel_type: e.target.value })} className="inp text-sm">
+        <select value={fuel} onChange={(e) => onChange({ fuel_type: e.target.value })} aria-label="Combustible" className="inp text-sm">
           {FUELS.map((f) => <option key={f} value={f}>{f}</option>)}
         </select>
       </Wrap>

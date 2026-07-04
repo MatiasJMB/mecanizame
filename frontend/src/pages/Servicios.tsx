@@ -11,6 +11,7 @@ import SegmentedToggle from '../components/SegmentedToggle';
 import EmptyState from '../components/EmptyState';
 import { useConfirm } from '../components/ConfirmProvider';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useModalA11y } from '@/hooks/useModalA11y';
 import { friendlyError } from '../lib/errors';
 import { canDelete } from '../lib/roles';
 import {
@@ -254,7 +255,8 @@ function CategoryAccordion({
   return (
     <section className="rounded-2xl border border-white/10 bg-gray-900/40 p-5">
       <div className="group flex items-center gap-2 rounded-xl px-1 py-1">
-        <button onClick={onToggle} className="p-1 text-gray-500 hover:text-gray-300">
+        <button onClick={onToggle} aria-expanded={open} aria-label={`${open ? 'Contraer' : 'Expandir'} ${cat.name}`}
+          className="p-1 text-gray-500 hover:text-gray-300">
           <ChevronRight className={`h-4 w-4 transition-transform ${open ? 'rotate-90' : ''}`} />
         </button>
         {editing && !noActions ? (
@@ -346,9 +348,11 @@ function ServiceForm({ draft, categories, saving, onChange, onCancel, onSave }: 
   draft: Draft; categories: Category[]; saving: boolean; onChange: (d: Draft) => void; onCancel: () => void; onSave: () => void;
 }) {
   useBodyScrollLock();
+  const dialogRef = useModalA11y(onCancel);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onCancel}>
-      <div className="animate-scaleIn max-h-[90vh] w-full max-w-md overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1}
+        className="animate-scaleIn max-h-[90vh] w-full max-w-md overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-black">{draft.id ? 'Editar servicio' : 'Nuevo servicio'}</h3>
           <button onClick={onCancel} aria-label="Cerrar" title="Cerrar" className="rounded-lg p-1 text-gray-400 hover:bg-white/5"><X className="h-5 w-5" /></button>

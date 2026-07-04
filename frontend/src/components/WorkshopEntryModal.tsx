@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { validateOrgInvitation, createOrganization, acceptOrgInvitation } from '@/api';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useModalA11y } from '@/hooks/useModalA11y';
 import SegmentedToggle from './SegmentedToggle';
 import PhoneInput from './PhoneInput';
 import { roleLabel, type Role } from '../lib/roles';
@@ -16,6 +17,7 @@ export default function WorkshopEntryModal({ onClose, onDone, initialMode = 'cre
   initialMode?: 'create' | 'join';
 }) {
   useBodyScrollLock();
+  const dialogRef = useModalA11y(onClose);
   const [mode, setMode] = useState<'create' | 'join'>(initialMode);
   const [saving, setSaving] = useState(false);
 
@@ -58,7 +60,8 @@ export default function WorkshopEntryModal({ onClose, onDone, initialMode = 'cre
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div className="animate-scaleIn w-full max-w-md rounded-3xl border border-white/10 bg-gray-900 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1}
+        className="animate-scaleIn w-full max-w-md rounded-3xl border border-white/10 bg-gray-900 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-black">Agregar taller</h3>
           <button onClick={onClose} aria-label="Cerrar" title="Cerrar" className="rounded-lg p-1 text-gray-400 hover:bg-white/5"><X className="h-5 w-5" /></button>

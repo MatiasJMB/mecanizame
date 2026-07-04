@@ -13,6 +13,7 @@ import OrderDetailModal from '../components/OrderDetailModal';
 import PhoneInput from '../components/PhoneInput';
 import { friendlyError } from '../lib/errors';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useModalA11y } from '@/hooks/useModalA11y';
 import { useConfirm } from '../components/ConfirmProvider';
 import EmptyState from '../components/EmptyState';
 import { Plus, Loader2, Car, Phone, Mail, User, Users, X, ChevronRight, Pencil, Trash2, Copy, Check } from 'lucide-react';
@@ -300,9 +301,11 @@ function CustomerDetail({ customer, onEditCustomer, onDeleteCustomer, onAddVehic
 
 function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   useBodyScrollLock();
+  const dialogRef = useModalA11y(onClose);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div className="animate-scaleIn max-h-[90vh] w-full max-w-md overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1}
+        className="animate-scaleIn max-h-[90vh] w-full max-w-md overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-black">{title}</h3>
           <button onClick={onClose} className="rounded-lg p-1 text-gray-400 hover:bg-white/5"><X className="h-5 w-5" /></button>

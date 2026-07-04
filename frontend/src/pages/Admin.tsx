@@ -12,6 +12,7 @@ import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
 import { useConfirm } from '../components/ConfirmProvider';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useModalA11y } from '@/hooks/useModalA11y';
 import { Loader2, Building2, Users, Car, ClipboardList, TrendingUp, KeyRound, Copy, Check, LogIn, Plus, Trash2, Power, Wallet, Pencil, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -420,6 +421,7 @@ function BillingModal({ org, revenue, onClose, onSave }: {
   org: OrgRow; revenue: number; onClose: () => void; onSave: (paidUntil: string, monthlyFee: number | null) => void;
 }) {
   useBodyScrollLock();
+  const dialogRef = useModalA11y(onClose);
   const [fee, setFee] = useState(org.monthly_fee ? String(org.monthly_fee) : '');
   const [due, setDue] = useState(() => {
     if (org.paid_until) return org.paid_until;
@@ -437,7 +439,8 @@ function BillingModal({ org, revenue, onClose, onSave }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div className="animate-scaleIn max-h-[90vh] w-full max-w-md overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1}
+        className="animate-scaleIn max-h-[90vh] w-full max-w-md overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-black">Configurar cobro · {org.name}</h3>
           <button onClick={onClose} aria-label="Cerrar" title="Cerrar" className="rounded-lg p-1 text-gray-400 hover:bg-white/5"><X className="h-5 w-5" /></button>

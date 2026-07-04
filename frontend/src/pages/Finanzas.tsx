@@ -12,6 +12,7 @@ import PageHeader from '../components/PageHeader';
 import EmptyState from '../components/EmptyState';
 import SegmentedToggle from '../components/SegmentedToggle';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useModalA11y } from '@/hooks/useModalA11y';
 import toast from 'react-hot-toast';
 import {
   Loader2, TrendingUp, TrendingDown, Wallet, CalendarRange, X,
@@ -452,10 +453,12 @@ function BucketDetail({ bucket, daily, orders, onClose }: {
   bucket: Bucket; daily: boolean; orders: FinOrder[]; onClose: () => void;
 }) {
   useBodyScrollLock();
+  const dialogRef = useModalA11y(onClose);
   const total = orders.reduce((a, o) => a + (o.total_amount ?? 0), 0);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div className="animate-scaleIn max-h-[85vh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1}
+        className="animate-scaleIn max-h-[85vh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         <div className="mb-1 flex items-start justify-between gap-2">
           <div>
             <h3 className="text-lg font-black capitalize">{bucketTitle(bucket, daily)}</h3>

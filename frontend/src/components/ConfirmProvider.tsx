@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useModalA11y } from '@/hooks/useModalA11y';
 
 type ConfirmOptions = {
   title?: string;
@@ -47,10 +48,12 @@ function ConfirmDialog({ opts, onCancel, onConfirm }: {
   opts: ConfirmOptions; onCancel: () => void; onConfirm: () => void;
 }) {
   useBodyScrollLock();
+  const dialogRef = useModalA11y(onCancel);
   const danger = opts.danger ?? true;
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4" onClick={onCancel}>
-      <div className="animate-scaleIn w-full max-w-sm rounded-3xl border border-white/10 bg-gray-900 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1}
+        className="animate-scaleIn w-full max-w-sm rounded-3xl border border-white/10 bg-gray-900 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start gap-3">
           <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${danger ? 'bg-red-500/15 text-red-400' : 'bg-blue-500/15 text-blue-400'}`}>
             <AlertTriangle className="h-5 w-5" />

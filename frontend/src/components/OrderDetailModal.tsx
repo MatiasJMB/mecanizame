@@ -7,6 +7,7 @@ import { formatMoney, formatDate, formatDateTime, dateInputValue } from '../lib/
 import { ORDER_STATUS, ORDER_STATUS_ORDER, type WorkOrderStatus } from '../lib/taller';
 import { friendlyError } from '../lib/errors';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useModalA11y } from '@/hooks/useModalA11y';
 import { useConfirm } from './ConfirmProvider';
 import ServiceLinesEditor, { linesTotal, type Line, type ServiceOpt } from './ServiceLinesEditor';
 import { Loader2, X, Trash2, Pencil, Phone, Car, CalendarDays, StickyNote, Copy, Check } from 'lucide-react';
@@ -38,6 +39,8 @@ export default function OrderDetailModal({ orderId, onClose, onChanged, onDelete
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
+  // No cerrar con Escape mientras se edita (evita perder cambios), igual que el clic en el fondo.
+  const dialogRef = useModalA11y(editing ? undefined : onClose);
   const [lines, setLines] = useState<Line[]>([]);
   const [scheduled, setScheduled] = useState('');
   const [notes, setNotes] = useState('');
@@ -142,7 +145,8 @@ export default function OrderDetailModal({ orderId, onClose, onChanged, onDelete
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={editing ? undefined : onClose}>
-      <div className="animate-scaleIn max-h-[90vh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1}
+        className="animate-scaleIn max-h-[90vh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         {loading || !order ? (
           <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-blue-400" /></div>
         ) : (

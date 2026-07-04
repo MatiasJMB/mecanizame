@@ -16,6 +16,7 @@ import PageHeader from '../components/PageHeader';
 import SegmentedToggle from '../components/SegmentedToggle';
 import SmartVehicleFields from '../components/SmartVehicleFields';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useModalA11y } from '@/hooks/useModalA11y';
 import { useConfirm } from '../components/ConfirmProvider';
 import { canDelete } from '../lib/roles';
 import EmptyState from '../components/EmptyState';
@@ -351,6 +352,7 @@ type CustomerOpt = { id: string; full_name: string; phone: string | null; vehicl
 
 function OrderForm({ organizationId, onClose, onSaved }: { organizationId: string; onClose: () => void; onSaved: () => void }) {
   useBodyScrollLock();
+  const dialogRef = useModalA11y(onClose);
   const [customers, setCustomers] = useState<CustomerOpt[]>([]);
   const [services, setServices] = useState<ServiceOpt[]>([]);
   const [loading, setLoading] = useState(true);
@@ -439,7 +441,8 @@ function OrderForm({ organizationId, onClose, onSaved }: { organizationId: strin
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div className="animate-scaleIn max-h-[90vh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1}
+        className="animate-scaleIn max-h-[90vh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-gray-900 p-6 outline-none" onClick={(e) => e.stopPropagation()}>
         <div className="mb-5 flex items-center justify-between">
           <h3 className="text-lg font-black">Nueva orden de servicio</h3>
           <button onClick={onClose} className="rounded-lg p-1 text-gray-400 hover:bg-white/5"><X className="h-5 w-5" /></button>
