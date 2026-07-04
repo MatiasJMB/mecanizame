@@ -5,6 +5,7 @@ import { listPendingOrgs, registerOrgPayment, setOrgBilling, setOrgActive, gener
 import { useAuth } from '../context/AuthContext';
 import type { Organization, PendingOrg } from '@/types';
 import { formatMoney, formatDate, parseCLP, dateInputValue } from '../lib/format';
+import { addMonthsClamped } from '../lib/date';
 import { billingInfo, billingChip, BILLING } from '../lib/billing';
 import { HELP } from '../lib/help';
 import PageHeader from '../components/PageHeader';
@@ -92,7 +93,8 @@ export default function Admin() {
   const registerPayment = async (o: OrgRow) => {
     const paidFuture = o.paid_until && new Date(o.paid_until + 'T12:00:00') > new Date();
     const base = paidFuture ? new Date(o.paid_until + 'T12:00:00') : new Date();
-    const next = new Date(base); next.setMonth(next.getMonth() + 1);
+    // Clampeo de mes igual que el RPC (interval '1 month'): 31-ene → 28-feb, no 3-mar.
+    const next = addMonthsClamped(base, 1);
     const nextLabel = next.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' });
     const ok = await confirm({
       title: `Registrar pago de ${o.name}`,

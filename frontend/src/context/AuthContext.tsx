@@ -50,6 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [switching, setSwitching] = useState(false);
   const [blockedMsg, setBlockedMsg] = useState<string | null>(null);
   const initialLoaded = useRef(false);
+  const switchingRef = useRef(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
@@ -145,11 +146,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const needsOnboarding = !!session && !isSuperAdmin && memberships.length === 0 && !loading;
 
   const switchOrg = async (orgId: string) => {
-    if (orgId === activeOrgId || !memberships.some((m) => m.organization.id === orgId)) return;
+    // Guardia de reentrada: dos clics rápidos en talleres distintos podían dejar la RLS
+    // (org activo server-side) y la UI apuntando a talleres distintos.
+    if (switchingRef.current || orgId === activeOrgId || !memberships.some((m) => m.organization.id === orgId)) return;
+    switchingRef.current = true;
     setSwitching(true);
     // Mover el taller activo server-side ANTES de cambiar el estado local: así la RLS ya
     // apunta al taller nuevo cuando las páginas recargan por su dep-array [organizationId].
     const { error } = await setActiveOrg(orgId);
+    switchingRef.current = false;
     setSwitching(false);
     if (error) { toast.error('No se pudo cambiar de taller'); return; }
     setActiveOrgId(orgId);

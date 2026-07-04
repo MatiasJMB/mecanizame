@@ -7,6 +7,8 @@
 //   suspendido  → pasó la gracia → acceso bloqueado
 //   sin_definir → el super-admin aún no configuró el cobro (paid_until null)
 
+import { santiagoToday } from './date';
+
 export const BILLING = { warnDays: 7, graceDays: 3 } as const;
 
 export type BillingStatus = 'sin_definir' | 'al_dia' | 'por_vencer' | 'vencido' | 'suspendido';
@@ -45,7 +47,8 @@ export function billingInfo(paidUntil: string | null | undefined, now: Date = ne
     return { status: 'sin_definir', label: LABELS.sin_definir, daysUntilDue: null, dueLabel: null, suspendLabel: null, blocking: false };
   }
   const due = noon(new Date(paidUntil + 'T12:00:00')); // interpretar como fecha local, sin corrimiento por zona horaria
-  const today = noon(now);
+  // "Hoy" anclado a la fecha calendario de Chile, no al reloj/zona del dispositivo del viewer.
+  const today = noon(new Date(santiagoToday(now) + 'T12:00:00'));
   const days = Math.round((due.getTime() - today.getTime()) / 86400000);
   const suspend = new Date(due);
   suspend.setDate(suspend.getDate() + BILLING.graceDays);

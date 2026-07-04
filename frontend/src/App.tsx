@@ -14,6 +14,7 @@ import Admin from './pages/Admin';
 import Equipo from './pages/Equipo';
 import Shell from './components/Shell';
 import NoWorkshop from './components/NoWorkshop';
+import ErrorBoundary from './components/ErrorBoundary';
 import { ConfirmProvider } from './components/ConfirmProvider';
 import { SearchProvider } from './context/SearchContext';
 import { TourProvider } from './components/TourProvider';
@@ -99,13 +100,15 @@ function MainApp() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <ConfirmProvider>
-          <ThemedToaster />
-          <MainApp />
-        </ConfirmProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <ConfirmProvider>
+            <ThemedToaster />
+            <MainApp />
+          </ConfirmProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
