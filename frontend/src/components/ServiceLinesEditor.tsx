@@ -33,7 +33,7 @@ export default function ServiceLinesEditor({ lines, services, onChange }: {
         <div key={l.id ?? `new-${i}`} className="flex items-start gap-2 rounded-xl border border-white/10 bg-gray-950/40 p-2.5">
           <div className="min-w-0 flex-1">
             {l.service_id ? (
-              <p className="text-sm font-semibold leading-snug">{l.description}</p>
+              <p className="text-sm font-bold leading-snug">{l.description}</p>
             ) : (
               <input value={l.description} onChange={(e) => updateLine(i, { description: e.target.value })} placeholder="Servicio personalizado" className="inp w-full !py-1.5 text-sm" />
             )}

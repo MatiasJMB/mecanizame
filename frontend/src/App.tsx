@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
@@ -20,7 +21,7 @@ import { TourProvider } from './components/TourProvider';
 function FullScreenLoader({ label }: { label?: string }) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-950 text-center text-gray-100">
-      <div className="h-12 w-12 animate-spin rounded-full border-4 border-white/10 border-t-blue-400" />
+      <Loader2 className="h-12 w-12 animate-spin text-blue-400" />
       <p className="text-xs font-black uppercase tracking-[0.28em] text-gray-500">
         {label || 'Cargando…'}
       </p>
@@ -68,7 +69,7 @@ function ThemedToaster() {
           border: '1px solid var(--theme-border)',
           boxShadow: 'var(--shadow-lg)',
           borderRadius: '1rem',
-          fontWeight: 600,
+          fontWeight: 700,
         },
       }}
     />

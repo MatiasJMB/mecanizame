@@ -14,7 +14,7 @@ export default function OnboardingChecklist({ services, customers, orders }: {
   if (steps.every((s) => s.done)) return null;
 
   return (
-    <section className="rounded-2xl border border-blue-500/25 bg-blue-500/5 p-5">
+    <section className="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
       <h2 className="flex items-center gap-2 font-bold">
         <Rocket className="h-4 w-4 text-blue-400" /> Primeros pasos para dejar tu taller andando
       </h2>

@@ -93,7 +93,7 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="mt-8 text-center text-xs font-medium text-gray-500">
+          <p className="mt-8 text-center text-xs text-gray-500">
             ¿No tienes cuenta?{' '}
             <Link to="/registro" className="ml-1 font-bold text-blue-400 hover:text-blue-300 hover:underline">
               Registra tu taller

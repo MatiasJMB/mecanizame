@@ -33,7 +33,7 @@ export default function NoWorkshop() {
           </button>
         </div>
 
-        <button onClick={signOut} className="mt-6 text-xs font-medium text-gray-500 hover:text-gray-300 hover:underline">
+        <button onClick={signOut} className="mt-6 text-xs text-gray-500 hover:text-gray-300 hover:underline">
           Cerrar sesión
         </button>
       </div>
