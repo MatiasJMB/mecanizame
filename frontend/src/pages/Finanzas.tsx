@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '@/api/client';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useOrgGuard } from '@/hooks/useOrgGuard';
 import { canSeeFinanzas } from '../lib/roles';
 import { formatMoney, formatCompactCLP, formatDate } from '../lib/format';
 import { dayKey, monthKey, addDays, itemNames } from '../lib/date';
@@ -57,6 +58,7 @@ function niceCeil(v: number) {
 
 export default function Finanzas() {
   const { organizationId, isSuperAdmin, role } = useAuth();
+  const isFresh = useOrgGuard();
   const [orders, setOrders] = useState<FinOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [preset, setPreset] = useState<Preset>('q');
@@ -69,16 +71,18 @@ export default function Finanzas() {
 
   useEffect(() => {
     if (!organizationId) return;
+    const oid = organizationId;
     (async () => {
       setLoading(true);
       const { data } = await supabase
         .from('work_orders')
         .select('code, status, total_amount, created_at, customers(full_name), vehicles(license_plate), work_order_items(subtotal, description, services(name))')
         .eq('organization_id', organizationId).order('created_at');
+      if (!isFresh(oid)) return;
       setOrders((data ?? []) as unknown as FinOrder[]);
       setLoading(false);
     })();
-  }, [organizationId]);
+  }, [organizationId, isFresh]);
 
   // Solo las órdenes Terminadas cuentan como venta; las activas son "por cobrar".
   const completed = useMemo(() => orders.filter((o) => o.status === 'completed'), [orders]);

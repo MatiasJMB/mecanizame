@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/api/client';
 import { useAuth } from '../context/AuthContext';
+import { useOrgGuard } from '@/hooks/useOrgGuard';
 import { canDelete } from '../lib/roles';
 import { useSearch } from '../context/SearchContext';
 import { formatMoney, formatDate, norm } from '../lib/format';
@@ -33,6 +34,7 @@ type HistoryOrder = {
 
 export default function Clientes() {
   const { organizationId, role, isSuperAdmin } = useAuth();
+  const isFresh = useOrgGuard();
   const canDel = isSuperAdmin || canDelete(role);
   const confirm = useConfirm();
   const { query, setQuery } = useSearch();
@@ -46,6 +48,7 @@ export default function Clientes() {
 
   const load = async () => {
     if (!organizationId) return;
+    const oid = organizationId;
     setLoading(true);
     const { data } = await supabase
       .from('customers')
@@ -53,6 +56,7 @@ export default function Clientes() {
       .eq('organization_id', organizationId)
       .is('deleted_at', null)
       .order('created_at', { ascending: false });
+    if (!isFresh(oid)) return;
     setCustomers((data ?? []) as unknown as Customer[]);
     setLoading(false);
   };

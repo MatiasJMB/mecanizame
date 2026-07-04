@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/api/client';
 import { useAuth } from '../context/AuthContext';
+import { useOrgGuard } from '@/hooks/useOrgGuard';
 import { formatMoney, formatDate } from '../lib/format';
 import { ORDER_STATUS, ACTIVE_STATUSES, type WorkOrderStatus } from '../lib/taller';
 import { HELP } from '../lib/help';
@@ -32,6 +33,7 @@ type RecentOrder = {
 
 export default function Panel() {
   const { organizationId } = useAuth();
+  const isFresh = useOrgGuard();
   const [kpis, setKpis] = useState<Kpis | null>(null);
   const [recent, setRecent] = useState<RecentOrder[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,6 +43,7 @@ export default function Panel() {
 
   const load = useCallback(async () => {
     if (!organizationId) return;
+    const oid = organizationId;
     const monthStart = new Date();
     monthStart.setDate(1);
     monthStart.setHours(0, 0, 0, 0);
@@ -61,6 +64,7 @@ export default function Panel() {
       if (o.status === 'completed' && new Date(o.created_at) >= monthStart) revenueMonth += o.total_amount ?? 0;
     }
 
+    if (!isFresh(oid)) return;
     setKpis({
       revenueMonth,
       customers: customersR.count ?? 0,
@@ -71,7 +75,7 @@ export default function Panel() {
     });
     setRecent((recentR.data ?? []) as unknown as RecentOrder[]);
     setLoading(false);
-  }, [organizationId]);
+  }, [organizationId, isFresh]);
 
   useEffect(() => { load(); }, [load]);
 

@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/api/client';
+import { createWorkOrder } from '@/api';
 import { useAuth } from '../context/AuthContext';
+import { useOrgGuard } from '@/hooks/useOrgGuard';
 import { useSearch } from '../context/SearchContext';
 import { formatMoney, formatDate, formatDateTime, norm } from '../lib/format';
 import { dayKey, addDays, itemNames } from '../lib/date';
@@ -44,6 +46,7 @@ const firstOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1);
 
 export default function Ordenes() {
   const { organizationId, role, isSuperAdmin } = useAuth();
+  const isFresh = useOrgGuard();
   const canDel = isSuperAdmin || canDelete(role);
   const confirm = useConfirm();
   const { query } = useSearch();
@@ -64,6 +67,7 @@ export default function Ordenes() {
 
   const load = async () => {
     if (!organizationId) return;
+    const oid = organizationId;
     setLoading(true);
     const [ordersR, customersR, servicesR] = await Promise.all([
       supabase
@@ -74,6 +78,7 @@ export default function Ordenes() {
       supabase.from('customers').select('id', { count: 'exact', head: true }).eq('organization_id', organizationId).is('deleted_at', null),
       supabase.from('services').select('id', { count: 'exact', head: true }).eq('organization_id', organizationId).eq('is_active', true).is('deleted_at', null),
     ]);
+    if (!isFresh(oid)) return;
     setOrders((ordersR.data ?? []) as unknown as Order[]);
     setCustomerCount(customersR.count ?? 0);
     setServiceCount(servicesR.count ?? 0);
@@ -413,25 +418,21 @@ function OrderForm({ organizationId, onClose, onSaved }: { organizationId: strin
       } else {
         vehId = vehicleId || null;
       }
-      // Orden + líneas. El código sigue al último emitido (no al conteo: borrar una
-      // orden bajaría el conteo y el código se repetiría).
-      const { data: lastOrder } = await supabase.from('work_orders').select('code')
-        .eq('organization_id', organizationId).like('code', 'OT-%')
-        .order('created_at', { ascending: false }).limit(1).maybeSingle();
-      const lastNum = parseInt(lastOrder?.code?.slice(3) ?? '0', 10);
-      const code = 'OT-' + String((Number.isFinite(lastNum) ? lastNum : 0) + 1).padStart(4, '0');
-      const { data: order, error } = await supabase.from('work_orders').insert({
-        organization_id: organizationId, customer_id: custId, vehicle_id: vehId, code, status,
-        scheduled_at: scheduledAt ? new Date(scheduledAt + 'T00:00:00').toISOString() : null, total_amount: total, notes: notes.trim() || null,
-      }).select('id').single();
-      if (error || !order) throw new Error('orden');
-      const items = lines.map((l) => ({ work_order_id: order.id, service_id: l.service_id, description: l.description || 'Servicio', quantity: l.quantity, unit_price: l.unit_price, subtotal: l.unit_price * l.quantity }));
-      const { error: itemsErr } = await supabase.from('work_order_items').insert(items);
-      if (itemsErr) throw new Error('orden');
-      toast.success(`Orden ${code} creada`);
+      // Orden + líneas en una sola transacción (RPC): código OT correlativo por taller,
+      // atómico y sin carrera; el trigger recalc_work_order_total fija el total.
+      const { data: created, error } = await createWorkOrder({
+        customerId: custId,
+        vehicleId: vehId,
+        status,
+        scheduledAt: scheduledAt ? new Date(scheduledAt + 'T00:00:00').toISOString() : null,
+        notes: notes.trim() || null,
+        items: lines.map((l) => ({ service_id: l.service_id, description: l.description || 'Servicio', quantity: l.quantity, unit_price: l.unit_price })),
+      });
+      if (error || !created) throw new Error('orden');
+      toast.success(`Orden ${created.code} creada`);
       onSaved();
     } catch (e: any) {
-      const m: Record<string, string> = { cliente: 'No se pudo crear el cliente', patente: 'Esa patente ya existe en tu taller', vehiculo: 'No se pudo crear el vehículo' };
+      const m: Record<string, string> = { patente: 'Esa patente ya existe en tu taller', vehiculo: 'No se pudo crear el vehículo' };
       toast.error(m[e?.message] || 'No se pudo crear la orden');
     } finally { setSaving(false); }
   };

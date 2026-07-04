@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { supabase } from '@/api/client';
 import { listOrgMembers, inviteMember, setMemberRole, removeMember as removeMemberApi, leaveOrg, deleteOwnOrganization } from '@/api';
 import { useAuth } from '../context/AuthContext';
+import { useOrgGuard } from '@/hooks/useOrgGuard';
 import { formatDate } from '../lib/format';
 import { roleLabel, roleChip, canManageTeam, type Role } from '../lib/roles';
 import type { OrgMember } from '@/types';
@@ -18,6 +19,7 @@ type Invite = { id: string; code: string; email: string | null; role: Role; is_u
 
 export default function Equipo() {
   const { organizationId, organizationName, user, role, isSuperAdmin, refreshMemberships } = useAuth();
+  const isFresh = useOrgGuard();
   const confirm = useConfirm();
   const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
@@ -35,6 +37,7 @@ export default function Equipo() {
 
   const load = useCallback(async () => {
     if (!organizationId) return;
+    const oid = organizationId;
     setLoading(true);
     const [membersR, invitesR, custR, vehR, ordR] = await Promise.all([
       listOrgMembers(organizationId),
@@ -44,11 +47,12 @@ export default function Equipo() {
       supabase.from('vehicles').select('id', { count: 'exact', head: true }).eq('organization_id', organizationId).is('deleted_at', null),
       supabase.from('work_orders').select('id', { count: 'exact', head: true }).eq('organization_id', organizationId),
     ]);
+    if (!isFresh(oid)) return;
     setMembers((membersR.data ?? []) as Member[]);
     setInvites((invitesR.data ?? []) as Invite[]);
     setCounts({ customers: custR.count ?? 0, vehicles: vehR.count ?? 0, orders: ordR.count ?? 0 });
     setLoading(false);
-  }, [organizationId]);
+  }, [organizationId, isFresh]);
 
   useEffect(() => { load(); }, [load]);
 

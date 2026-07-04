@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/api/client';
 import { useAuth } from '../context/AuthContext';
+import { useOrgGuard } from '@/hooks/useOrgGuard';
 import { useSearch } from '../context/SearchContext';
 import { formatCLP, formatMoney, parseCLP, norm } from '../lib/format';
 import { DEFAULT_CATALOG } from '../lib/taller';
@@ -29,6 +30,7 @@ const emptyDraft = (category_id = ''): Draft => ({ name: '', description: '', ba
 
 export default function Servicios() {
   const { organizationId, role, isSuperAdmin } = useAuth();
+  const isFresh = useOrgGuard();
   const canDel = isSuperAdmin || canDelete(role);
   const confirm = useConfirm();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -46,11 +48,13 @@ export default function Servicios() {
 
   const load = async () => {
     if (!organizationId) return;
+    const oid = organizationId;
     setLoading(true);
     const [{ data: cats }, { data: svcs }] = await Promise.all([
       supabase.from('service_categories').select('*').eq('organization_id', organizationId).order('sort_order'),
       supabase.from('services').select('*').eq('organization_id', organizationId).is('deleted_at', null).order('created_at'),
     ]);
+    if (!isFresh(oid)) return;
     setCategories(cats ?? []);
     setServices(svcs ?? []);
     setOpenCats(new Set((cats ?? []).map((c) => c.id).concat('sin')));
