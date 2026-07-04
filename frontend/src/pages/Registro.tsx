@@ -7,15 +7,11 @@ import { useTheme } from '../context/ThemeContext';
 import { AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import { translateError } from '../lib/auth-errors';
 import { BRAND } from '../lib/taller';
+import { formatCode } from '../lib/format';
 import { roleLabel, type Role } from '../lib/roles';
 import PhoneInput from '../components/PhoneInput';
 import toast from 'react-hot-toast';
 
-// Formatea la clave a XXXX-XXXX automáticamente (el taller no teclea el guion).
-const formatCode = (v: string) => {
-  const clean = v.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
-  return clean.length > 4 ? `${clean.slice(0, 4)}-${clean.slice(4)}` : clean;
-};
 
 export default function Registro() {
   useEffect(() => { document.title = 'Registrar taller — Mecanízame'; }, []);

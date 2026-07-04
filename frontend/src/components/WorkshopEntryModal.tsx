@@ -4,13 +4,9 @@ import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import SegmentedToggle from './SegmentedToggle';
 import PhoneInput from './PhoneInput';
 import { roleLabel, type Role } from '../lib/roles';
+import { formatCode } from '../lib/format';
 import { X, Store, KeyRound, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
-
-const formatCode = (v: string) => {
-  const clean = v.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
-  return clean.length > 4 ? `${clean.slice(0, 4)}-${clean.slice(4)}` : clean;
-};
 
 /** Modal para crear un taller nuevo (autoservicio) o unirse a uno existente con un código.
  *  Reutilizado por el selector de taller y por la pantalla "sin taller". */

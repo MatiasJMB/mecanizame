@@ -9,8 +9,7 @@ los talleres de la plataforma, sus cobros y aprobaciones.
 | Capa | Tecnología |
 |------|------------|
 | Frontend | React 19 · TypeScript · Vite · React Router 7 · Tailwind CSS v4 |
-| Backend de datos | Supabase (PostgreSQL + Auth + RLS) |
-| Backend WhatsApp | Node/Express + Baileys |
+| Backend | Supabase (PostgreSQL + Auth + RLS + RPCs) |
 
 El aislamiento entre talleres (multi-tenancy) se aplica en la base con **Row Level
 Security** sobre `current_org_id()`; las mutaciones sensibles pasan por RPCs
@@ -29,7 +28,6 @@ frontend/
     lib/        Utilidades puras (formato, billing, roles, errores…)
     pages/      Vistas por ruta
     types/      Tipos de dominio compartidos
-backend/        Servicio Node/Baileys (WhatsApp)
 supabase/
   migrations/   Esquema y RPCs versionados (aplicar en orden)
 ```

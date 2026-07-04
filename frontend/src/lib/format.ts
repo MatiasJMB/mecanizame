@@ -61,3 +61,9 @@ export function dateInputValue(value: string | null | undefined): string {
 
 /** Normaliza texto para búsquedas: sin acentos y en minúsculas. */
 export const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+/** Formatea un código de invitación a `XXXX-XXXX` (solo A-Z0-9, el usuario no teclea el guion). */
+export const formatCode = (v: string) => {
+  const clean = v.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+  return clean.length > 4 ? `${clean.slice(0, 4)}-${clean.slice(4)}` : clean;
+};

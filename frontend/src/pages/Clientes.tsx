@@ -23,7 +23,7 @@ type Vehicle = {
 };
 type Customer = {
   id: string; full_name: string; phone: string | null; email: string | null;
-  address: string | null; notes: string | null; vehicles: Vehicle[];
+  notes: string | null; vehicles: Vehicle[];
 };
 type HistoryOrder = {
   id: string; code: string | null; status: WorkOrderStatus; total_amount: number;
@@ -49,7 +49,7 @@ export default function Clientes() {
     setLoading(true);
     const { data } = await supabase
       .from('customers')
-      .select('id, full_name, phone, email, address, notes, vehicles(id, license_plate, make, model, year, engine, fuel_type, mileage, vin)')
+      .select('id, full_name, phone, email, notes, vehicles(id, license_plate, make, model, year, engine, fuel_type, mileage, vin)')
       .eq('organization_id', organizationId)
       .is('deleted_at', null)
       .order('created_at', { ascending: false });

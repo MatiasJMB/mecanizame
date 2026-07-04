@@ -4,6 +4,7 @@ import { supabase } from '@/api/client';
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
 import { formatMoney, formatDate, formatDateTime, norm } from '../lib/format';
+import { dayKey, addDays, itemNames } from '../lib/date';
 import ServiceLinesEditor, { linesTotal, type Line, type ServiceOpt } from '../components/ServiceLinesEditor';
 import OrderDetailModal from '../components/OrderDetailModal';
 import { rowClick } from '../lib/ui';
@@ -38,12 +39,8 @@ type Tab = (typeof TABS)[number]['key'];
 
 const DAY_LABELS = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'];
 
-const pad = (n: number) => String(n).padStart(2, '0');
-const localKey = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const addDays = (d: Date, n: number) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const addMonths = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth() + n, 1);
 const firstOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1);
-const itemNames = (o: Order) => o.work_order_items?.map((i) => i.services?.name || i.description).filter(Boolean) ?? [];
 
 export default function Ordenes() {
   const { organizationId, role, isSuperAdmin } = useAuth();
@@ -107,7 +104,7 @@ export default function Ordenes() {
     for (const o of searched) {
       const raw = o[dateField];
       if (!raw) continue;
-      const key = localKey(new Date(raw));
+      const key = dayKey(new Date(raw));
       if (!m.has(key)) m.set(key, []);
       m.get(key)!.push(o);
     }
@@ -225,7 +222,7 @@ function CalendarView({
   onDelete: (o: Order) => void;
   canDelete: boolean;
 }) {
-  const todayKey = localKey(new Date());
+  const todayKey = dayKey(new Date());
   const first = firstOfMonth(cursor);
   const offset = (first.getDay() + 6) % 7;
   const start = addDays(first, -offset);
@@ -234,7 +231,7 @@ function CalendarView({
 
   const monthOrders = cells
     .filter((d) => d.getMonth() === cursor.getMonth())
-    .flatMap((d) => byDay.get(localKey(d)) ?? []);
+    .flatMap((d) => byDay.get(dayKey(d)) ?? []);
   const monthTotal = monthOrders.reduce((a, o) => a + (o.total_amount ?? 0), 0);
 
   const dayOrders = selectedDay ? (byDay.get(selectedDay) ?? []) : [];
@@ -259,7 +256,7 @@ function CalendarView({
         </div>
         <div key={monthName} className="animate-fadeIn grid grid-cols-7 gap-1">
           {cells.map((d) => {
-            const key = localKey(d);
+            const key = dayKey(d);
             const list = byDay.get(key) ?? [];
             const outside = d.getMonth() !== cursor.getMonth();
             const isToday = key === todayKey;
@@ -323,9 +320,9 @@ function CalendarView({
                       {o.vehicles?.license_plate && <span className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-xs text-gray-300">{o.vehicles.license_plate}</span>}
                       {canDelete && <button onClick={() => onDelete(o)} title="Eliminar orden" className="ml-auto shrink-0 rounded-lg p-1 text-gray-400 hover:bg-red-500/10 hover:text-red-400"><Trash2 className="h-3.5 w-3.5" /></button>}
                     </div>
-                    {itemNames(o).length > 0 && (
+                    {itemNames(o.work_order_items).length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-1">
-                        {itemNames(o).map((n, i) => <span key={i} className="rounded-md bg-white/5 px-1.5 py-0.5 text-[11px] text-gray-400">{n}</span>)}
+                        {itemNames(o.work_order_items).map((n, i) => <span key={i} className="rounded-md bg-white/5 px-1.5 py-0.5 text-[11px] text-gray-400">{n}</span>)}
                       </div>
                     )}
                     <div className="mt-2 flex items-center justify-between">

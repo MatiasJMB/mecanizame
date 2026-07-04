@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { canSeeFinanzas } from '../lib/roles';
 import { formatMoney, formatCompactCLP, formatDate } from '../lib/format';
+import { dayKey, monthKey, addDays, itemNames } from '../lib/date';
 import { ACTIVE_STATUSES, type WorkOrderStatus } from '../lib/taller';
 import { HELP } from '../lib/help';
 import PageHeader from '../components/PageHeader';
@@ -30,10 +31,6 @@ type Bucket = { key: string; label: string; full: string; value: number; count: 
 type Period = { preset: Preset; from: string; to: string };
 
 const monthLabel = (d: Date) => d.toLocaleDateString('es-CL', { month: 'short' }).replace('.', '');
-const pad = (n: number) => String(n).padStart(2, '0');
-const dayKey = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const monthKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}`;
-const addDays = (d: Date, n: number) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 
 const PRESETS: [Preset, string][] = [
   ['month', 'Este mes'], ['lastMonth', 'Mes pasado'], ['q', 'Últimos 3 meses'], ['year', 'Este año'], ['custom', 'Personalizado'],
@@ -46,7 +43,7 @@ function rangeFor(preset: Preset, from: string, to: string): [Date, Date] {
   if (preset === 'lastMonth') return [new Date(now.getFullYear(), now.getMonth() - 1, 1), new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59)];
   if (preset === 'q') return [new Date(now.getFullYear(), now.getMonth() - 2, 1), now];
   if (preset === 'year') return [new Date(now.getFullYear(), 0, 1), now];
-  return [from ? new Date(from) : start, to ? new Date(to + 'T23:59:59') : now];
+  return [from ? new Date(from + 'T00:00:00') : start, to ? new Date(to + 'T23:59:59') : now];
 }
 
 /** Techo "bonito" para el eje Y: 1 / 2 / 2.5 / 5 × 10^n. */
@@ -57,9 +54,6 @@ function niceCeil(v: number) {
   const f = m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10;
   return f * p;
 }
-
-const itemNames = (o: FinOrder) =>
-  (o.work_order_items ?? []).map((it) => it.services?.name || it.description).filter(Boolean) as string[];
 
 export default function Finanzas() {
   const { organizationId, isSuperAdmin, role } = useAuth();
@@ -161,11 +155,11 @@ export default function Finanzas() {
     const esc = (s: string) => '"' + s.replace(/"/g, '""') + '"';
     const head = ['Fecha', 'Código', 'Cliente', 'Patente', 'Servicios', 'Monto CLP'];
     const rows = inRange.map((o) => [
-      new Date(o.created_at).toISOString().slice(0, 10),
+      dayKey(new Date(o.created_at)),
       o.code ?? '',
       o.customers?.full_name ?? 'Sin cliente',
       o.vehicles?.license_plate ?? '',
-      itemNames(o).join(' + '),
+      itemNames(o.work_order_items).join(' + '),
       String(o.total_amount ?? 0),
     ]);
     const bom = String.fromCharCode(0xfeff); // BOM para que Excel abra el CSV como UTF-8
@@ -470,7 +464,7 @@ function BucketDetail({ bucket, daily, orders, onClose }: {
         ) : (
           <div className="mt-4 space-y-2">
             {orders.map((o, idx) => {
-              const names = itemNames(o);
+              const names = itemNames(o.work_order_items);
               return (
                 <div key={idx} className="rounded-xl border border-white/10 bg-gray-950/40 p-3">
                   <div className="flex items-center gap-2">

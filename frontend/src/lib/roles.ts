@@ -20,4 +20,3 @@ export const roleChip: Record<Role, string> = {
 export const canManageTeam = (r: Role | null) => r === 'owner' || r === 'admin';
 export const canDelete = (r: Role | null) => r === 'owner' || r === 'admin';
 export const canSeeFinanzas = (r: Role | null) => r === 'owner' || r === 'admin';
-export const canGrantOwner = (r: Role | null) => r === 'owner';
