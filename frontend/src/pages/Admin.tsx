@@ -121,10 +121,10 @@ export default function Admin() {
     setGenerating(true);
     const { data, error } = await generatePlatformInvitation(note.trim() || null);
     setGenerating(false);
-    if (error || !data) { toast.error('No se pudo generar la clave'); return; }
+    if (error || !data) { toast.error('No se pudo generar el código'); return; }
     setNote('');
     try { await navigator.clipboard.writeText(data); } catch { /* clipboard opcional */ }
-    toast.success(`Clave generada y copiada: ${data}`);
+    toast.success(`Código generado y copiado: ${data}`);
     loadInvites();
   };
 
@@ -133,7 +133,7 @@ export default function Admin() {
   };
 
   const deleteInvite = async (inv: Invite) => {
-    const ok = await confirm({ title: `Eliminar clave ${inv.code}`, message: inv.is_used ? 'Ya fue usada; solo se quita del listado.' : 'Se eliminará esta clave de invitación.', confirmText: 'Eliminar clave' });
+    const ok = await confirm({ title: `Eliminar código ${inv.code}`, message: inv.is_used ? 'Ya fue usado; solo se quita del listado.' : 'Se eliminará este código de invitación.', confirmText: 'Eliminar código' });
     if (!ok) return;
     const { error } = await supabase.from('invitations').delete().eq('id', inv.id);
     if (error) { toast.error('No se pudo eliminar'); return; }
@@ -247,11 +247,11 @@ export default function Admin() {
       {/* Invitaciones */}
       <section className="rounded-2xl border border-white/10 bg-gray-900/40 p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="flex items-center gap-2 font-bold"><KeyRound className="h-4 w-4 text-blue-400" /> Claves de invitación</h2>
+          <h2 className="flex items-center gap-2 font-bold"><KeyRound className="h-4 w-4 text-blue-400" /> Códigos de invitación</h2>
           <span className="text-xs text-gray-500">{pendingInvites} pendiente(s) · {invites.length} total</span>
         </div>
         <p className="mb-3 text-xs text-gray-400">
-          Genera una clave y entrégala a un taller para que pueda registrarse. Cada clave es de un solo uso.
+          Genera un código y entrégalo a un taller para que pueda registrarse. Cada código es de un solo uso.
         </p>
         <div className="flex flex-wrap items-center gap-2">
           <input value={note} onChange={(e) => setNote(e.target.value)}
@@ -260,12 +260,12 @@ export default function Admin() {
             className="inp max-w-xs !py-2 text-sm" />
           <button onClick={generate} disabled={generating}
             className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-black text-white hover:bg-blue-500 disabled:opacity-50">
-            {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />} Generar clave
+            {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />} Generar código
           </button>
         </div>
 
         {invites.length === 0 && (
-          <p className="mt-4 text-xs text-gray-500">Aún no has generado claves. Genera la primera con el botón de arriba.</p>
+          <p className="mt-4 text-xs text-gray-500">Aún no has generado códigos. Genera el primero con el botón de arriba.</p>
         )}
         {invites.length > 0 && (
           <div className="mt-4 divide-y divide-white/5">
@@ -287,7 +287,7 @@ export default function Admin() {
                       {copied === inv.code ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
                     </button>
                   )}
-                  <button onClick={() => deleteInvite(inv)} title="Eliminar clave"
+                  <button onClick={() => deleteInvite(inv)} title="Eliminar código"
                     className="rounded-lg p-1.5 text-gray-400 hover:bg-red-500/10 hover:text-red-400">
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -310,7 +310,7 @@ export default function Admin() {
         </div>
         {approvedOrgs.length === 0 && (
           <EmptyState icon={Building2} title="Aún no hay talleres registrados"
-            description="Genera una clave de invitación y entrégala a un taller para que se registre." />
+            description="Genera un código de invitación y entrégalo a un taller para que se registre." />
         )}
         {approvedOrgs.map((o) => {
           const m = agg[o.id] ?? { customers: 0, vehicles: 0, orders: 0, revenue: 0 };

@@ -66,7 +66,7 @@ export default function Login() {
               <input
                 id="login-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email" inputMode="email" required
-                className="inp" placeholder="tucorreo@taller.cl"
+                className="inp" placeholder="nombre@correo.cl"
               />
             </div>
             <div className="space-y-1.5">

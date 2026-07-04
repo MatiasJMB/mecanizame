@@ -25,10 +25,10 @@ export default function SuspendedGate() {
       <h2 className="mt-4 text-xl font-black">{title}</h2>
       <p className="mx-auto mt-2 max-w-md text-sm text-gray-400">
         {pending
-          ? <>El taller <b>{organization.name}</b> está esperando la aprobación del administrador. Podrás usarlo en cuanto lo apruebe.</>
+          ? <>El taller <b>{organization.name}</b> está esperando la aprobación del equipo de Mecanízame. Podrás usarlo en cuanto lo aprueben.</>
           : disabled
-          ? <>El taller <b>{organization.name}</b> fue deshabilitado por el administrador. Contáctalo para reactivarlo.</>
-          : <>El taller <b>{organization.name}</b> venció el <b>{bi.dueLabel}</b> y superó el período de gracia. Regulariza el pago con el administrador para reactivar el acceso.</>}
+          ? <>El taller <b>{organization.name}</b> fue deshabilitado por el equipo de Mecanízame. Contáctalos para reactivarlo.</>
+          : <>El taller <b>{organization.name}</b> venció el <b>{bi.dueLabel}</b> y superó el período de gracia. Regulariza el pago con el equipo de Mecanízame para reactivar el acceso.</>}
       </p>
       <p className="mx-auto mt-4 max-w-md text-xs text-gray-500">
         Si tienes otros talleres, cambia a uno de ellos con el selector de taller.

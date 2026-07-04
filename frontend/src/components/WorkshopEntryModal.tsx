@@ -42,7 +42,7 @@ export default function WorkshopEntryModal({ onClose, onDone, initialMode = 'cre
     const { error } = await createOrganization(name.trim(), phone.trim() || null);
     setSaving(false);
     if (error) return toast.error(error.message || 'No se pudo crear el taller');
-    toast.success('Taller creado. Queda pendiente de aprobación del administrador.');
+    toast.success('Taller creado. Queda pendiente de aprobación del equipo de Mecanízame.');
     await onDone();
     onClose();
   };
@@ -83,7 +83,7 @@ export default function WorkshopEntryModal({ onClose, onDone, initialMode = 'cre
               <label className="ml-1 block text-xs font-bold uppercase tracking-widest text-gray-400">Teléfono (opcional)</label>
               <PhoneInput value={phone} onChange={setPhone} />
             </div>
-            <p className="text-[11px] text-gray-500">Quedará pendiente de aprobación del administrador antes de poder usarse. Si lo creas por error, lo puedes eliminar tú mismo desde Equipo mientras esté vacío.</p>
+            <p className="text-[11px] text-gray-500">Quedará pendiente de aprobación del equipo de Mecanízame antes de poder usarse. Si lo creas por error, lo puedes eliminar tú mismo desde Equipo mientras esté vacío.</p>
             <button onClick={createOrg} disabled={saving}
               className="w-full rounded-xl bg-blue-600 py-2.5 text-sm font-black text-white transition-colors hover:bg-blue-500 disabled:opacity-50">
               {saving ? 'Creando…' : 'Crear taller'}

@@ -357,7 +357,7 @@ function CustomerForm({ organizationId, customer, onClose, onSaved }: {
           <label className="ml-1 block text-xs font-bold uppercase tracking-widest text-gray-400">Teléfono</label>
           <PhoneInput value={f.phone} onChange={(v) => setF({ ...f, phone: v })} />
         </div>
-        <Field label="Correo" value={f.email} onChange={(v) => setF({ ...f, email: v })} placeholder="correo@ejemplo.cl (opcional)" type="email" />
+        <Field label="Correo" value={f.email} onChange={(v) => setF({ ...f, email: v })} placeholder="nombre@correo.cl (opcional)" type="email" />
         <Field label="Notas" value={f.notes} onChange={(v) => setF({ ...f, notes: v })} placeholder="Ej: cliente de flota, paga a fin de mes (opcional)" />
       </div>
       <FormButtons saving={saving} onCancel={onClose} onSave={save} />

@@ -139,7 +139,7 @@ export default function Registro() {
             </>
           )}
 
-          <Field label="Correo electrónico" value={email} onChange={setEmail} type="email" placeholder="taller@correo.cl" required />
+          <Field label="Correo electrónico" value={email} onChange={setEmail} type="email" placeholder="nombre@correo.cl" required />
 
           <PasswordField label="Contraseña (mínimo 6 caracteres)" value={password} onChange={setPassword} show={showPass} onToggle={() => setShowPass((s) => !s)} minLength={6} />
           <PasswordField label="Repetir contraseña" value={confirm} onChange={setConfirm} show={showConfirm} onToggle={() => setShowConfirm((s) => !s)} />

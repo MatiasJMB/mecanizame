@@ -257,7 +257,7 @@ export default function Equipo() {
             </>
           ) : (
             <p className="mt-1 text-xs text-gray-400">
-              Este taller ya tiene registros ({counts.customers} cliente(s), {counts.vehicles} vehículo(s), {counts.orders} orden(es)), así que no puede autoeliminarse. Para borrarlo, pídeselo al administrador.
+              Este taller ya tiene registros ({counts.customers} cliente(s), {counts.vehicles} vehículo(s), {counts.orders} orden(es)), así que no puede autoeliminarse. Para borrarlo, pídeselo al equipo de Mecanízame.
             </p>
           )}
         </section>
